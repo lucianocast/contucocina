@@ -34,7 +34,7 @@
             {{-- Fecha y hora --}}
             <div class="mb-4">
                 <label for="fecha" class="block font-semibold mb-1">Fecha de entrega</label>
-                <input type="date" name="fecha" id="fecha" required class="w-full border rounded px-3 py-2">
+                <input type="date" name="fecha" id="fecha" required min="{{ date('Y-m-d') }}" class="w-full border rounded px-3 py-2">
             </div>
 
             <div class="mb-4">

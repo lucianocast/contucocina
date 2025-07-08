@@ -26,7 +26,7 @@ class PedidoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'fecha' => 'required|date',
+            'fecha' => 'required|date|after_or_equal:today',
             'hora'  => 'required',
             'productos' => 'required|array',
         ]);
