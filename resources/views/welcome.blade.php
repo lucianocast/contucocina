@@ -25,12 +25,43 @@
     </header>
 
     <div class="contenido">
-        <div style="border: 1px solid #ccc; padding: 2rem; margin-bottom: 2rem;">
-            <h2>Destacado</h2>
+        <h2 class="text-xl font-bold mb-4">Destacado</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    @forelse ($destacados as $producto)
+        <div class="border p-4 rounded shadow">
+            <h3 class="font-bold">{{ $producto->nombre }}</h3>
+            <p>{{ $producto->descripcion }}</p>
+            <p class="text-green-600 font-semibold">${{ number_format($producto->precio, 0, ',', '.') }}</p>
         </div>
+    @empty
+        <p>No hay productos destacados.</p>
+    @endforelse
+</div>
         <div class="grid">
-            <div><h3>Ofertas</h3></div>
-            <div><h3>Populares</h3></div>
+            <h2 class="text-xl font-bold mt-8 mb-4">Ofertas</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    @forelse ($ofertas as $producto)
+        <div class="border p-4 rounded shadow">
+            <h3 class="font-bold">{{ $producto->nombre }}</h3>
+            <p>{{ $producto->descripcion }}</p>
+            <p class="text-red-600 font-semibold">${{ number_format($producto->precio, 0, ',', '.') }}</p>
+        </div>
+    @empty
+        <p>No hay ofertas disponibles.</p>
+    @endforelse
+</div>
+           <h2 class="text-xl font-bold mt-8 mb-4">Populares</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    @forelse ($populares as $producto)
+        <div class="border p-4 rounded shadow">
+            <h3 class="font-bold">{{ $producto->nombre }}</h3>
+            <p>{{ $producto->descripcion }}</p>
+            <p class="text-blue-600 font-semibold">${{ number_format($producto->precio, 0, ',', '.') }}</p>
+        </div>
+    @empty
+        <p>No hay productos populares.</p>
+    @endforelse
+</div>
         </div>
     </div>
 

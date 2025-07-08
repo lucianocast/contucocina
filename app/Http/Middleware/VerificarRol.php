@@ -16,9 +16,9 @@ class VerificarRol
      * @param  string  $rol
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle(Request $request, Closure $next, string $rol): Response
+    public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (!$request->user() || $request->user()->rol !== $rol) {
+        if (!$request->user() || $request->user()->rol !== $role) {
             abort(403, 'Acceso no autorizado.');
         }
 

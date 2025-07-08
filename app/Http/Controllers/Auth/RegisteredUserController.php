@@ -28,30 +28,30 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+{
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
 
+    try {
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'rol' => 'cliente',
         ]);
+    } catch (\Exception $e) {
+        dd($e->getMessage()); // ⛔ Esto te dice si hay un error al guardar
+    }
 
-        event(new Registered($user));
+    Auth::login($user);
 
-        Auth::login($user);
+    if ($user->rol === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
 
-        $rol = auth()->user()->rol;
-
-if ($rol === 'admin') {
-    return redirect()->route('admin.dashboard');
-} else {
     return redirect()->route('catalogo');
 }
-
-    }
 }

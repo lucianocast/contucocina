@@ -27,8 +27,16 @@ class ProductoController extends Controller
             'categoria' => 'nullable|string|max:100',
             'visible'   => 'required|boolean',
         ]);
-
-        Producto::create($request->all());
+        Producto::create([
+        'nombre'       => $request->nombre,
+        'precio'       => $request->precio,
+        'descripcion'  => $request->descripcion,
+        'categoria'    => $request->categoria,
+        'visible'      => $request->visible,
+        'destacado'    => $request->has('destacado'),
+        'oferta'       => $request->has('oferta'),
+        'popular'  => $request->has('popular'),
+    ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
     }
@@ -49,7 +57,15 @@ class ProductoController extends Controller
         ]);
 
         $producto = Producto::findOrFail($id);
-        $producto->update($request->all());
+        $producto->update([
+        'nombre'       => $request->nombre,
+        'precio'       => $request->precio,
+        'categoria'    => $request->categoria,
+        'visible'      => $request->visible,
+        'destacado'    => $request->has('destacado'),
+        'oferta'       => $request->has('oferta'),
+        'popular'  => $request->has('popular'),
+    ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
     }

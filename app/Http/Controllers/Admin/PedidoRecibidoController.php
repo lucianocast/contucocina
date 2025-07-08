@@ -9,13 +9,26 @@ use App\Models\Pedido;
 class PedidoRecibidoController extends Controller
 {
     /**
-     * Muestra todos los pedidos recibidos.
+     * Muestra todos los pedidos recibidos, con filtros por cliente y fecha.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pedidos = Pedido::with('cliente', 'items.producto')
-                         ->orderByDesc('created_at')
-                         ->get();
+        $query = Pedido::with('cliente', 'items.producto')
+                       ->orderByDesc('created_at');
+
+        // Filtro por nombre del cliente (parcial, insensible a mayúsculas/minúsculas)
+        if ($request->filled('cliente')) {
+            $query->whereHas('cliente', function ($q) use ($request) {
+                $q->where('name', 'ILIKE', '%' . $request->cliente . '%');
+            });
+        }
+
+        // Filtro por fecha exacta de entrega
+        if ($request->filled('fecha')) {
+            $query->whereDate('fecha_entrega', $request->fecha);
+        }
+
+        $pedidos = $query->get();
 
         return view('admin.pedidos.index', compact('pedidos'));
     }

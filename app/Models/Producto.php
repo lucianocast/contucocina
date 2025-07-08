@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Producto extends Model
 {
-    public function recetas()
-{
-    return $this->hasMany(Receta::class);
-}
+    protected $fillable = [
+        'nombre',
+        'precio',
+        'visible',
+        'categoria',
+        'destacado', 
+        'oferta', 
+        'popular',
+    ];
+    
 }

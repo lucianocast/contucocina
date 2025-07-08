@@ -41,13 +41,13 @@ public function store(Request $request)
     $request->session()->regenerate();
 
     // Redireccionar según el rol
-    $user = Auth::user();
+    $rol = auth()->user()->rol;
 
-    if ($user->rol === 'admin') {
+    if ($rol === 'admin') {
         return redirect()->route('admin.dashboard');
     }
 
-    if ($user->rol === 'cliente') {
+    if ($rol === 'cliente') {
         return redirect()->route('cliente.pedido');
     }
 

@@ -12,24 +12,51 @@
 
             <div class="mb-4">
                 <label for="nombre" class="block font-semibold mb-1">Nombre del producto</label>
-                <input type="text" name="nombre" id="nombre" required class="w-full border rounded px-3 py-2">
+                <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}" required class="w-full border rounded px-3 py-2">
             </div>
 
             <div class="mb-4">
                 <label for="precio" class="block font-semibold mb-1">Precio</label>
-                <input type="number" name="precio" id="precio" step="0.01" required class="w-full border rounded px-3 py-2">
+                <input type="number" name="precio" id="precio" step="0.01" value="{{ old('precio') }}" required class="w-full border rounded px-3 py-2">
             </div>
 
             <div class="mb-4">
                 <label for="categoria" class="block font-semibold mb-1">Categoría</label>
-                <input type="text" name="categoria" id="categoria" class="w-full border rounded px-3 py-2">
+                <select name="categoria" id="categoria" class="w-full border rounded px-3 py-2">
+                    <option value="">Sin categoría</option>
+                    <option value="Tortas" {{ old('categoria') == 'Tortas' ? 'selected' : '' }}>Tortas</option>
+                    <option value="Cheesecakes" {{ old('categoria') == 'Cheesecakes' ? 'selected' : '' }}>Cheesecakes</option>
+                    <option value="Tartas" {{ old('categoria') == 'Tartas' ? 'selected' : '' }}>Tartas</option>
+                    <option value="Postres clásicos" {{ old('categoria') == 'Postres clásicos' ? 'selected' : '' }}>Postres clásicos</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="inline-flex items-center">
+                    <input type="checkbox" name="destacado" value="1" {{ old('destacado') ? 'checked' : '' }}>
+                    <span class="ml-2">Destacado</span>
+                </label>
+            </div>
+
+            <div class="mb-4">
+                <label class="inline-flex items-center">
+                    <input type="checkbox" name="oferta" value="1" {{ old('oferta') ? 'checked' : '' }}>
+                    <span class="ml-2">Oferta</span>
+                </label>
+            </div>
+
+            <div class="mb-4">
+                <label class="inline-flex items-center">
+                    <input type="checkbox" name="popular" value="1" {{ old('popular') ? 'checked' : '' }}>
+                    <span class="ml-2">Más Popular</span>
+                </label>
             </div>
 
             <div class="mb-4">
                 <label for="visible" class="block font-semibold mb-1">Visibilidad en catálogo</label>
                 <select name="visible" id="visible" class="w-full border rounded px-3 py-2">
-                    <option value="1" selected>Visible</option>
-                    <option value="0">Oculto</option>
+                    <option value="1" {{ old('visible', 1) == 1 ? 'selected' : '' }}>Visible</option>
+                    <option value="0" {{ old('visible') == 0 ? 'selected' : '' }}>Oculto</option>
                 </select>
             </div>
 

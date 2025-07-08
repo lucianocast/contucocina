@@ -38,6 +38,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'role' => \App\Http\Middleware\CheckRole::class,
+        'role' => \App\Http\Middleware\VerificarRol::class,
     ];
 }

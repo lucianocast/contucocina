@@ -6,7 +6,31 @@
 <div class="min-h-screen bg-gray-100 py-10">
     <div class="max-w-6xl mx-auto px-4">
         <h1 class="text-3xl font-bold mb-8 text-center">Pedidos Recibidos</h1>
+        <div class="mb-6 bg-white p-4 rounded shadow">
+    <form method="GET" action="{{ route('pedidos.recibidos') }}" class="flex flex-col md:flex-row gap-4 items-center">
+        <div class="flex-1">
+            <label for="cliente" class="block text-sm font-medium text-gray-700">Cliente</label>
+            <input type="text" name="cliente" id="cliente" value="{{ request('cliente') }}"
+                   class="w-full border rounded px-3 py-2" placeholder="Nombre del cliente">
+        </div>
 
+        <div class="flex-1">
+            <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha de entrega</label>
+            <input type="date" name="fecha" id="fecha" value="{{ request('fecha') }}"
+                   class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div class="mt-6 md:mt-5">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Filtrar
+            </button>
+            <a href="{{ route('pedidos.recibidos') }}"
+               class="ml-2 text-sm text-gray-600 underline hover:text-gray-900">
+                Limpiar filtros
+            </a>
+        </div>
+    </form>
+</div>
         @if ($pedidos->isEmpty())
             <p class="text-center text-gray-500">No hay pedidos por el momento.</p>
         @else

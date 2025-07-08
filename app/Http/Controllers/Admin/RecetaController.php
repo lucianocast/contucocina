@@ -50,7 +50,8 @@ class RecetaController extends Controller
         ]);
 
         $receta = Receta::findOrFail($id);
-        $receta->update($request->all());
+        $receta->update($request->only(['nombre', 'producto_id', 'descripcion']));
+
 
         return redirect()->route('recetas.index')->with('success', 'Receta actualizada correctamente.');
     }
