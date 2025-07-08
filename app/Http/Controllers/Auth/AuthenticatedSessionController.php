@@ -8,6 +8,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Session;
+
 
 class AuthenticatedSessionController extends Controller
 {
@@ -22,14 +25,37 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+public function store(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
+    if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        return back()->withErrors([
+            'email' => 'Credenciales incorrectas.',
+        ])->onlyInput('email');
     }
+
+    $request->session()->regenerate();
+
+    // Redireccionar según el rol
+    $user = Auth::user();
+
+    if ($user->rol === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+
+    if ($user->rol === 'cliente') {
+        return redirect()->route('cliente.pedido');
+    }
+
+    // Si no tiene rol válido, cerrar sesión y mostrar error
+    Auth::logout();
+    Session::flush();
+    return redirect('/login')->withErrors(['email' => 'Rol no autorizado.']);
+}
 
     /**
      * Destroy an authenticated session.
