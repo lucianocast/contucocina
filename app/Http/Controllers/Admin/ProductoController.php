@@ -26,17 +26,25 @@ class ProductoController extends Controller
             'precio'    => 'required|numeric|min:0',
             'categoria' => 'nullable|string|max:100',
             'visible'   => 'required|boolean',
+            'imagen'    => 'nullable|image|max:2048',
         ]);
+
+        $imagenPath = null;
+        if ($request->hasFile('imagen')) {
+            $imagenPath = $request->file('imagen')->store('productos', 'public');
+        }
+
         Producto::create([
-        'nombre'       => $request->nombre,
-        'precio'       => $request->precio,
-        'descripcion'  => $request->descripcion,
-        'categoria'    => $request->categoria,
-        'visible'      => $request->visible,
-        'destacado'    => $request->has('destacado'),
-        'oferta'       => $request->has('oferta'),
-        'popular'  => $request->has('popular'),
-    ]);
+            'nombre'       => $request->nombre,
+            'precio'       => $request->precio,
+            'descripcion'  => $request->descripcion,
+            'categoria'    => $request->categoria,
+            'visible'      => $request->visible,
+            'destacado'    => $request->has('destacado'),
+            'oferta'       => $request->has('oferta'),
+            'popular'      => $request->has('popular'),
+            'imagen'       => $imagenPath,
+        ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
     }
@@ -54,18 +62,26 @@ class ProductoController extends Controller
             'precio'    => 'required|numeric|min:0',
             'categoria' => 'nullable|string|max:100',
             'visible'   => 'required|boolean',
+            'imagen'    => 'nullable|image|max:2048',
         ]);
 
         $producto = Producto::findOrFail($id);
+
+        $imagenPath = $producto->imagen;
+        if ($request->hasFile('imagen')) {
+            $imagenPath = $request->file('imagen')->store('productos', 'public');
+        }
+
         $producto->update([
-        'nombre'       => $request->nombre,
-        'precio'       => $request->precio,
-        'categoria'    => $request->categoria,
-        'visible'      => $request->visible,
-        'destacado'    => $request->has('destacado'),
-        'oferta'       => $request->has('oferta'),
-        'popular'  => $request->has('popular'),
-    ]);
+            'nombre'       => $request->nombre,
+            'precio'       => $request->precio,
+            'categoria'    => $request->categoria,
+            'visible'      => $request->visible,
+            'destacado'    => $request->has('destacado'),
+            'oferta'       => $request->has('oferta'),
+            'popular'      => $request->has('popular'),
+            'imagen'       => $imagenPath,
+        ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
     }

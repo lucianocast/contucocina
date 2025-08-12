@@ -14,6 +14,7 @@ class Producto extends Model
         'destacado', 
         'oferta', 
         'popular',
+        'imagen',
     ];
     
 }

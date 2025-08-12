@@ -7,7 +7,7 @@
     <div class="max-w-xl mx-auto px-4">
         <h1 class="text-2xl font-bold mb-6 text-center">Crear Nuevo Producto</h1>
 
-        <form action="{{ route('productos.store') }}" method="POST">
+        <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-4">
@@ -53,11 +53,17 @@
             </div>
 
             <div class="mb-4">
-                <label for="visible" class="block font-semibold mb-1">Visibilidad en catálogo</label>
+                <label for="visible" class="block text-sm font-medium text-gray-700">Visibilidad en catálogo</label>
                 <select name="visible" id="visible" class="w-full border rounded px-3 py-2">
                     <option value="1" {{ old('visible', 1) == 1 ? 'selected' : '' }}>Visible</option>
-                    <option value="0" {{ old('visible') == 0 ? 'selected' : '' }}>Oculto</option>
+                    <option value="0" {{ old('visible', 1) == 0 ? 'selected' : '' }}>Oculto</option>
                 </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="imagen" class="block font-semibold mb-1">Imagen del producto</label>
+                <input type="file" name="imagen" id="imagen" accept="image/*" class="w-full border rounded px-3 py-2">
+                @error('imagen')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
             </div>
 
             <div class="text-center">

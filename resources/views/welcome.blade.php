@@ -10,6 +10,16 @@
         .contenido { padding: 2rem; text-align: center; }
         .grid { display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; }
         .grid div { border: 1px solid #ccc; padding: 2rem; width: 200px; }
+        .producto-img {
+            max-width: 180px;
+            max-height: 180px;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 0 auto 1rem auto;
+            object-fit: cover;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -29,6 +39,9 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     @forelse ($destacados as $producto)
         <div class="border p-4 rounded shadow">
+            @if ($producto->imagen)
+                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="Imagen de {{ $producto->nombre }}" class="producto-img">
+            @endif
             <h3 class="font-bold">{{ $producto->nombre }}</h3>
             <p>{{ $producto->descripcion }}</p>
             <p class="text-green-600 font-semibold">${{ number_format($producto->precio, 0, ',', '.') }}</p>
@@ -42,6 +55,9 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     @forelse ($ofertas as $producto)
         <div class="border p-4 rounded shadow">
+            @if ($producto->imagen)
+                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="Imagen de {{ $producto->nombre }}" class="producto-img">
+            @endif
             <h3 class="font-bold">{{ $producto->nombre }}</h3>
             <p>{{ $producto->descripcion }}</p>
             <p class="text-red-600 font-semibold">${{ number_format($producto->precio, 0, ',', '.') }}</p>
@@ -54,6 +70,9 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     @forelse ($populares as $producto)
         <div class="border p-4 rounded shadow">
+            @if ($producto->imagen)
+                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="Imagen de {{ $producto->nombre }}" class="producto-img">
+            @endif
             <h3 class="font-bold">{{ $producto->nombre }}</h3>
             <p>{{ $producto->descripcion }}</p>
             <p class="text-blue-600 font-semibold">${{ number_format($producto->precio, 0, ',', '.') }}</p>

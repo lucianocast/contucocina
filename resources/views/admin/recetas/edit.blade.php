@@ -29,6 +29,22 @@
                 </select>
             </div>
 
+            <div class="mb-4">
+                <label for="insumos" class="block font-semibold mb-1">Lista de insumos</label>
+                <input type="text" name="insumos" id="insumos"
+                       value="{{ old('insumos', $receta->insumos ?? '') }}"
+                       class="w-full border rounded px-3 py-2"
+                       placeholder="Ejemplo: Harina, Azúcar, Huevos">
+            </div>
+
+            <div class="mb-4">
+                <label for="cantidades" class="block font-semibold mb-1">Cantidad por insumo</label>
+                <input type="text" name="cantidades" id="cantidades"
+                       value="{{ old('cantidades', $receta->cantidades ?? '') }}"
+                       class="w-full border rounded px-3 py-2"
+                       placeholder="Ejemplo: Harina 500g, Azúcar 200g, Huevos 3">
+            </div>
+
             <div class="mb-6">
                 <label for="descripcion" class="block font-semibold mb-1">Descripción / Preparación</label>
                 <textarea name="descripcion" id="descripcion" rows="5"

@@ -29,6 +29,14 @@
                         @if ($pedido->notas)
                             <p class="mt-2 text-sm text-gray-600"><strong>Notas:</strong> {{ $pedido->notas }}</p>
                         @endif
+
+                        @if ($pedido->estado === 'pendiente')
+                            <form method="GET" action="{{ route('pedido.confirmar_cancelacion', $pedido->id) }}" class="mt-3">
+                                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                                    Cancelar pedido
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 @endforeach
             </div>

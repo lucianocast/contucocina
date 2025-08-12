@@ -30,11 +30,22 @@ public function store(Request $request)
     $request->validate([
         'email' => 'required|email',
         'password' => 'required',
+    ], [
+        'email.required' => 'El email es obligatorio.',
+        'email.email' => 'El email debe ser válido.',
+        'password.required' => 'La contraseña es obligatoria.',
     ]);
+
+    $user = \App\Models\User::where('email', $request->email)->first();
+    if (!$user) {
+        return back()->withErrors([
+            'email' => 'El correo ingresado no está registrado.',
+        ])->onlyInput('email');
+    }
 
     if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
         return back()->withErrors([
-            'email' => 'Credenciales incorrectas.',
+            'password' => 'La contraseña es incorrecta.',
         ])->onlyInput('email');
     }
 

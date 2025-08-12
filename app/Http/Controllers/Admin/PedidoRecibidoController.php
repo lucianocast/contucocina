@@ -30,6 +30,11 @@ class PedidoRecibidoController extends Controller
 
         $pedidos = $query->get();
 
+        // Recalcula el total por si los items cambiaron (opcional)
+        foreach ($pedidos as $pedido) {
+            $pedido->total = $pedido->items->sum('subtotal');
+        }
+
         return view('admin.pedidos.index', compact('pedidos'));
     }
 

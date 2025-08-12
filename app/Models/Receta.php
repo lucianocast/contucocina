@@ -14,6 +14,8 @@ class Receta extends Model
         'nombre',
         'producto_id',
         'descripcion',
+        'insumos',
+        'cantidades',
     ];
 
     public function producto()

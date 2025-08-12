@@ -27,6 +27,8 @@ class RecetaController extends Controller
             'nombre'      => 'required|string|max:100',
             'producto_id' => 'nullable|exists:productos,id',
             'descripcion' => 'nullable|string',
+            'insumos'     => 'nullable|string|max:255',
+            'cantidades'  => 'nullable|string|max:255',
         ]);
 
         Receta::create($request->all());
@@ -47,11 +49,12 @@ class RecetaController extends Controller
             'nombre'      => 'required|string|max:100',
             'producto_id' => 'nullable|exists:productos,id',
             'descripcion' => 'nullable|string',
+            'insumos'     => 'nullable|string|max:255',
+            'cantidades'  => 'nullable|string|max:255',
         ]);
 
         $receta = Receta::findOrFail($id);
-        $receta->update($request->only(['nombre', 'producto_id', 'descripcion']));
-
+        $receta->update($request->only(['nombre', 'producto_id', 'descripcion', 'insumos', 'cantidades']));
 
         return redirect()->route('recetas.index')->with('success', 'Receta actualizada correctamente.');
     }

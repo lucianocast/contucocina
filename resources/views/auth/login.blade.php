@@ -13,6 +13,16 @@
             </div>
         @endif
 
+        @if ($errors->any())
+            <div class="mb-4 p-3 border rounded bg-red-50 text-red-700">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
 

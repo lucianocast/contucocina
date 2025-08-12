@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Cliente;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pedido;
 use App\Models\Producto;
 use App\Models\ItemPedido;
+use App\Http\Requests\StorePedidoRequest; // ✅ Importamos el Request especializado
 
 class PedidoController extends Controller
 {
@@ -21,35 +21,35 @@ class PedidoController extends Controller
     }
 
     /**
-     * Guarda un nuevo pedido del cliente.
+     * Guarda un nuevo pedido del cliente usando StorePedidoRequest.
      */
-    public function store(Request $request)
+    public function store(StorePedidoRequest $request)
     {
-        $request->validate([
-            'fecha' => 'required|date|after_or_equal:today',
-            'hora'  => 'required',
-            'productos' => 'required|array',
-        ]);
-
+        // ✅ Creamos el pedido
         $pedido = Pedido::create([
             'cliente_id'     => Auth::id(),
-            'fecha_entrega'  => $request->fecha,
-            'hora_entrega'   => $request->hora,
-            'notas'          => $request->notas,
+            'fecha_entrega'  => $request->fecha_entrega,
+            'hora_entrega'   => $request->hora_entrega ?? null,
+            'notas'          => $request->personalizacion, // según UID
             'estado'         => 'pendiente',
+            'forma_pago'     => $request->forma_pago, // opcional
+            'tipo_retiro'    => $request->tipo_retiro, // opcional
         ]);
 
-        foreach ($request->productos as $producto_id => $cantidad) {
-            if ($cantidad > 0) {
+        // ✅ Guardamos ítems del pedido
+        foreach ($request->items as $item) {
+            if (!empty($item['cantidad']) && $item['cantidad'] > 0) {
                 ItemPedido::create([
                     'pedido_id'   => $pedido->id,
-                    'producto_id' => $producto_id,
-                    'cantidad'    => $cantidad,
+                    'producto_id' => $item['producto_id'],
+                    'cantidad'    => $item['cantidad'],
                 ]);
             }
         }
 
-        return redirect()->route('cliente.historial')->with('success', 'Pedido realizado con éxito.');
+        return redirect()
+            ->route('cliente.historial')
+            ->with('success', 'Pedido realizado con éxito.');
     }
 
     /**

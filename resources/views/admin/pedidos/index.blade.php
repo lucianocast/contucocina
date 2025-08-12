@@ -42,6 +42,9 @@
                             <span class="text-sm">Cliente: <strong>{{ $pedido->cliente->name }}</strong></span>
                         </div>
                         <p><strong>Entrega:</strong> {{ $pedido->fecha_entrega }} - {{ $pedido->hora_entrega }}</p>
+                        <p><strong>Pedido realizado el:</strong> {{ \Carbon\Carbon::parse($pedido->created_at)->format('d/m/Y H:i') }}</p>
+                        <p><strong>Forma de pago:</strong> {{ $pedido->forma_pago ?? '-' }}</p>
+                        <p><strong>Tipo de retiro:</strong> {{ $pedido->tipo_retiro ?? '-' }}</p>
                         <p><strong>Estado actual:</strong> {{ ucfirst($pedido->estado) }}</p>
 
                         <form action="{{ route('pedidos.cambiar_estado', $pedido->id) }}" method="POST" class="mt-3">

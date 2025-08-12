@@ -20,6 +20,8 @@
                     <th class="px-4 py-3">Nombre</th>
                     <th class="px-4 py-3">Producto Asociado</th>
                     <th class="px-4 py-3">Descripción</th>
+                    <th class="px-4 py-3">Insumos</th>
+                    <th class="px-4 py-3">Cantidades</th>
                     <th class="px-4 py-3 text-center">Acciones</th>
                 </tr>
             </thead>
@@ -29,6 +31,8 @@
                         <td class="px-4 py-2">{{ $receta->nombre }}</td>
                         <td class="px-4 py-2">{{ $receta->producto->nombre ?? 'Sin producto' }}</td>
                         <td class="px-4 py-2">{{ Str::limit($receta->descripcion, 40) }}</td>
+                        <td class="px-4 py-2">{{ $receta->insumos ?? '-' }}</td>
+                        <td class="px-4 py-2">{{ $receta->cantidades ?? '-' }}</td>
                         <td class="px-4 py-2 text-center">
                             <a href="{{ route('recetas.edit', $receta->id) }}"
                                class="text-blue-600 hover:underline mr-2">Editar</a>
@@ -41,7 +45,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-4 py-4 text-center text-gray-500">No hay recetas registradas.</td>
+                        <td colspan="6" class="px-4 py-4 text-center text-gray-500">No hay recetas registradas.</td>
                     </tr>
                 @endforelse
             </tbody>

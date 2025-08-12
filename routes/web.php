@@ -25,6 +25,11 @@ Route::middleware(['auth', 'role:cliente'])->group(function () {
 
     Route::get('/pedido/{id}/cancelar', [ClientePedidoController::class, 'confirmarCancelacion'])->name('pedido.confirmar_cancelacion');
     Route::put('/pedido/{id}/cancelar', [ClientePedidoController::class, 'cancelar'])->name('pedido.cancelar');
+    Route::get('/fechas-no-disponibles', function () {
+    return NoDisponibilidad::pluck('fecha')
+        ->map(fn($d) => $d->format('Y-m-d'))
+        ->values();
+})->name('fechas.bloqueadas');
 });
 
 // 🔴 ADMINISTRADOR
@@ -40,4 +45,32 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Gestión de pedidos recibidos
     Route::get('/admin/pedidos', [PedidoRecibidoController::class, 'index'])->name('pedidos.recibidos');
     Route::put('/admin/pedidos/{id}/estado', [PedidoRecibidoController::class, 'actualizarEstado'])->name('pedidos.cambiar_estado');
+    
+    // Gestión de reportes
+    Route::get('/admin/reportes', [\App\Http\Controllers\Admin\ReporteController::class, 'index'])
+    ->name('admin.reportes')
+    ->middleware(['auth', 'role:admin']);
+    
+    // Gestión de combos
+    Route::resource('admin/combos', \App\Http\Controllers\Admin\ComboController::class);
+    // Gestión de fechas no disponibles
+    Route::resource('/admin/no-disponibles', \App\Http\Controllers\Admin\NoDisponibilidadController::class)
+        ->except(['show'])
+        ->names('no-disponibles');
+    
+    //Gestión de recetarios
+    Route::get('/admin/recetario', [\App\Http\Controllers\Admin\RecetarioController::class,'index'])->name('recetario.index');
+    Route::post('/admin/recetario', [\App\Http\Controllers\Admin\RecetarioController::class,'store'])->name('recetario.store');
+    Route::get('/admin/recetario/{id}/descargar', [\App\Http\Controllers\Admin\RecetarioController::class,'download'])->name('recetario.download');
+    Route::delete('/admin/recetario/{id}', [\App\Http\Controllers\Admin\RecetarioController::class,'destroy'])->name('recetario.destroy');
+    
+    // Gestión de Usuarios
+    Route::resource('/admin/usuarios', \App\Http\Controllers\Admin\UserController::class)
+        ->parameters(['usuarios' => 'usuario'])
+        ->except(['show'])
+        ->names('usuarios');
+
+    // Activar/Desactivar
+    Route::patch('/admin/usuarios/{usuario}/toggle', [\App\Http\Controllers\Admin\UserController::class,'toggle'])
+        ->name('usuarios.toggle');
 });
